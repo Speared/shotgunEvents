@@ -1,3 +1,4 @@
+from __future__ import division
 # Copyright 2018 Autodesk, Inc.  All rights reserved.
 #
 # Use of this software is subject to the terms of the Autodesk license agreement
@@ -7,6 +8,8 @@
 
 # See docs folder for detailed usage info.
 
+from builtins import str
+from past.utils import old_div
 import os
 import math
 import shotgun_api3
@@ -75,7 +78,7 @@ def is_valid(sg, logger, args):
         )
         return
 
-    for name, type_targets in args_to_check.items():
+    for name, type_targets in list(args_to_check.items()):
 
         # Grab the setting's value type.
         value_type = type(args[name]).__name__
@@ -157,7 +160,7 @@ def update_shot_cut_duration_timecode(sg, logger, event, args):
             entity["id"],
             {
                 args["target_tc_field"]: int(
-                    math.ceil(entity[args["source_frames_field"]] / fps * 1000)
+                    math.ceil(old_div(entity[args["source_frames_field"]], fps) * 1000)
                 )
             },
         )
@@ -168,7 +171,7 @@ def update_shot_cut_duration_timecode(sg, logger, event, args):
                 str(entity["id"]),
                 {
                     args["target_tc_field"]: int(
-                        math.ceil(entity[args["source_frames_field"]] / fps * 1000)
+                        math.ceil(old_div(entity[args["source_frames_field"]], fps) * 1000)
                     )
                 },
             )

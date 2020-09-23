@@ -8,6 +8,7 @@
 # See docs folder for detailed usage info.
 
 from __future__ import division
+from builtins import str
 import os
 import shotgun_api3
 
@@ -95,7 +96,7 @@ def is_valid(sg, logger, args):
     }
 
     # Check our args.
-    for name, checks in args_to_check.items():
+    for name, checks in list(args_to_check.items()):
 
         # Grab the setting's value type.
         value_type = type(args[name])
@@ -160,7 +161,7 @@ def is_valid(sg, logger, args):
             return
 
         # Make sure our entity type has a link field setting.
-        if summary_item["entity_type"] not in args["link_fields"].keys():
+        if summary_item["entity_type"] not in list(args["link_fields"].keys()):
             logger.warning(
                 '%s is not defined in the "link_fields" setting, please fix.'
                 % summary_item["entity_type"]
