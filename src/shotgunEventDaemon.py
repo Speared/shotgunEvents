@@ -1242,12 +1242,13 @@ class CustomSMTPHandler(logging.handlers.SMTPHandler):
             socket.setdefaulttimeout(None)
 
         # Mostly copied from Python 2.7 implementation.
-        # Using email.Utils instead of email.utils for 2.4 compat.
         try:
             import smtplib
             try:
+                # Python-2 import.
                 from email.Utils import formatdate
             except ImportError:
+                # Python-3 import.
                 from email.utils import formatdate
                 
             port = self.mailport
