@@ -785,7 +785,7 @@ class Plugin(object):
             nextId = None
 
         now = datetime.datetime.now()
-        for k in self._backlog.keys():
+        for k in list(self._backlog):
             v = self._backlog[k]
             if v < now:
                 self.logger.warning("Timeout elapsed on backlog event id %d.", k)
@@ -1241,8 +1241,11 @@ class CustomSMTPHandler(logging.handlers.SMTPHandler):
         # Using email.Utils instead of email.utils for 2.4 compat.
         try:
             import smtplib
-            from email.Utils import formatdate
-
+            try:
+                from email.Utils import formatdate
+            except ImportError:
+                from email.utils import formatdate
+                
             port = self.mailport
             if not port:
                 port = smtplib.SMTP_PORT
