@@ -417,9 +417,9 @@ class Engine(object):
                     # in Shotgun.
                     if noStateCollections:
                         maxPluginStates = {}
-                        for collection in self._eventIdData.values():
-                            for pluginName, pluginState in collection.items():
-                                if pluginName in maxPluginStates.keys():
+                        for collection in list(self._eventIdData.values()):
+                            for pluginName, pluginState in list(collection.items()):
+                                if pluginName in list(maxPluginStates.keys()):
                                     if pluginState[0] > maxPluginStates[pluginName][0]:
                                         maxPluginStates[pluginName] = pluginState
                                 else:
@@ -428,8 +428,8 @@ class Engine(object):
                         lastEventId = self._getLastEventIdFromDatabase()
                         for collection in noStateCollections:
                             state = collection.getState()
-                            for pluginName in state.keys():
-                                if pluginName in maxPluginStates.keys():
+                            for pluginName in list(state.keys()):
+                                if pluginName in list(maxPluginStates.keys()):
                                     state[pluginName] = maxPluginStates[pluginName]
                                 else:
                                     state[pluginName] = lastEventId
@@ -608,7 +608,7 @@ class Engine(object):
             for collection in self._pluginCollections:
                 self._eventIdData[collection.path] = collection.getState()
 
-            for colPath, state in self._eventIdData.items():
+            for colPath, state in list(self._eventIdData.items()):
                 if state:
                     try:
                         with open(eventIdFile, "wb") as fh:
@@ -785,7 +785,7 @@ class Plugin(object):
             nextId = None
 
         now = datetime.datetime.now()
-        for k in self._backlog.keys():
+        for k in list(self._backlog):
             v = self._backlog[k]
             if v < now:
                 self.logger.warning("Timeout elapsed on backlog event id %d.", k)
@@ -1238,11 +1238,15 @@ class CustomSMTPHandler(logging.handlers.SMTPHandler):
             socket.setdefaulttimeout(None)
 
         # Mostly copied from Python 2.7 implementation.
-        # Using email.Utils instead of email.utils for 2.4 compat.
         try:
             import smtplib
-            from email.Utils import formatdate
-
+            try:
+                # Python-2 import.
+                from email.Utils import formatdate
+            except ImportError:
+                # Python-3 import.
+                from email.utils import formatdate
+                
             port = self.mailport
             if not port:
                 port = smtplib.SMTP_PORT
