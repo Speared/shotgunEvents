@@ -7,7 +7,6 @@
 
 # See docs folder for detailed usage info.
 
-from builtins import str
 import os
 import shotgun_api3
 
@@ -63,7 +62,7 @@ def is_valid(sg, logger, args):
         "author_is_artist": {"type": [bool], "allow_empty": False},
     }
 
-    for name, checks in list(args_to_check.items()):
+    for name, checks in args_to_check.items():
 
         # Bail if we're missing any required args.
         try:

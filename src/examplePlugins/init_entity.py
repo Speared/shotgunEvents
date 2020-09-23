@@ -7,7 +7,6 @@
 
 # See docs folder for detailed usage info.
 
-from builtins import str
 import os
 import six
 import shotgun_api3
@@ -78,7 +77,7 @@ def is_valid(sg, logger, args):
         )
         return
 
-    for name, checks in list(args_to_check.items()):
+    for name, checks in args_to_check.items():
 
         # Grab the arg's value type.
         value_type = type(args[name]).__name__
@@ -125,7 +124,7 @@ def is_valid(sg, logger, args):
                 "float": ["float"],
             }
 
-            for field_name, field_value in list(args[name].items()):
+            for field_name, field_value in args[name].items():
                 field_value_type = type(field_value).__name__
 
                 # We assume unicode and str to be equivalent for these checks because
@@ -136,7 +135,7 @@ def is_valid(sg, logger, args):
 
                 # First, let's make sure the field is valid for our
                 # entity type.
-                if field_name not in list(entity_schema.keys()):
+                if field_name not in entity_schema.keys():
                     logger.warning(
                         '%s entity field "%s" does not exist in Shotgun, please fix.'
                         % (args["entity_type"], field_name,)
@@ -217,7 +216,7 @@ def init_entity(sg, logger, event, args):
 
     update_data = {}
     # Convert anything that's currently unicode to a string.
-    for key, value in list(args["initial_data"].items()):
+    for key, value in args["initial_data"].items():
         key = six.ensure_str(key)
         value = six.ensure_str(value)
 

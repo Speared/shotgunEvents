@@ -4,8 +4,6 @@
 # http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/
 
 from __future__ import print_function
-from builtins import str
-from builtins import object
 import atexit
 import os
 import signal

@@ -7,7 +7,6 @@
 
 # See docs folder for detailed usage info.
 
-from builtins import object
 import os
 
 
