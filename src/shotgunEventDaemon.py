@@ -417,9 +417,9 @@ class Engine(object):
                     # in Shotgun.
                     if noStateCollections:
                         maxPluginStates = {}
-                        for collection in self._eventIdData.values():
-                            for pluginName, pluginState in collection.items():
-                                if pluginName in maxPluginStates.keys():
+                        for collection in list(self._eventIdData.values()):
+                            for pluginName, pluginState in list(collection.items()):
+                                if pluginName in list(maxPluginStates.keys()):
                                     if pluginState[0] > maxPluginStates[pluginName][0]:
                                         maxPluginStates[pluginName] = pluginState
                                 else:
@@ -428,8 +428,8 @@ class Engine(object):
                         lastEventId = self._getLastEventIdFromDatabase()
                         for collection in noStateCollections:
                             state = collection.getState()
-                            for pluginName in state.keys():
-                                if pluginName in maxPluginStates.keys():
+                            for pluginName in list(state.keys()):
+                                if pluginName in list(maxPluginStates.keys()):
                                     state[pluginName] = maxPluginStates[pluginName]
                                 else:
                                     state[pluginName] = lastEventId
@@ -608,7 +608,7 @@ class Engine(object):
             for collection in self._pluginCollections:
                 self._eventIdData[collection.path] = collection.getState()
 
-            for colPath, state in self._eventIdData.items():
+            for colPath, state in list(self._eventIdData.items()):
                 if state:
                     try:
                         with open(eventIdFile, "wb") as fh:
